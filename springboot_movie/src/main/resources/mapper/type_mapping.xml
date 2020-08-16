@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper:根标签，namespace：命名空间，随便写，一般保证命名空间唯一 -->
+<mapper namespace="com.fh.dao.MovieDao">
+
+    <select id="selectMovieCount"  parameterType="com.fh.model.Query" resultType="java.lang.Long">
+        select count(*) from tt_movie where 1=1
+        <if test="mName !=null and mName !='' ">
+            and mName like  concat('%',#{mName},'%')
+        </if>
+    </select>
+
+
+    <!--parameterType输入参数类型    resultType输出结果类型 -->
+    <select id="selectListAll"  parameterType="com.fh.model.Query" resultType="com.fh.model.Movie">
+        select * from tt_movie
+        where 1=1
+        <if test="mName !=null and mName !='' ">
+            and mName like  concat('%',#{mName},'%')
+        </if>
+        <if test="showHome !=null and showHome >0 ">
+            and showHome = #{showHome}
+        </if>
+    </select>
+
+    <insert id="insertMovie" parameterType="com.fh.model.Movie">
+        insert into tt_movie (mName,showTime,mNum,price,showHome,imgUrl)
+        value (#{mName},#{showTime},#{mNum},#{price},#{showHome},#{imgUrl})
+    </insert>
+
+    <update id="updateMovie" parameterType="com.fh.model.Movie">
+        update tt_movie set mNum=mNum-1
+        where mId=#{mId}
+    </update>
+
+</mapper>
